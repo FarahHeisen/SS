@@ -1,0 +1,635 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:700);
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+body{
+  top: 0;
+  background-attachment: fixed;
+  background-image: url(../images/background.jpg);
+}
+
+
+/*************************************
+*
+*         LE MENU
+*
+**************************************/
+
+#menu {
+  position: fixed; /* pour fixer la position on scrolling */  
+  background: #ffffff;
+  width: 100%;
+  top: 5px; /* to the menu being on the top while scrolling haha */
+  z-index: 50;
+}
+
+
+#menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  display: inline-block;
+}
+
+#menu ul:after {
+  content: " ";
+  display: block;
+  font-size: 0;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+#menu ul li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+#menu.align-right ul li {
+  float: right;
+}
+#menu.align-center ul {
+  text-align: center;
+}
+#menu ul li a {
+  color: #272727;
+  text-decoration: none;
+  display: block;
+  padding: 15px 25px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  position: relative;
+  -webkit-transition: color .25s;
+  -moz-transition: color .25s;
+  -ms-transition: color .25s;
+  -o-transition: color .25s;
+  transition: color .25s;
+}
+#menu ul li a:hover {
+  color: rgba(107, 116, 180, 0.9);
+}
+#menu ul li a:hover:before {
+  width: 100%;
+}
+#menu ul li a:after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: -3px;
+  top: 19px;
+  height: 6px;
+  width: 6px;
+  background: #ffffff;
+  opacity: .5;
+}
+#menu ul li a:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 0;
+  background: rgba(107, 116, 180, 0.9);
+  -webkit-transition: width .25s;
+  -moz-transition: width .25s;
+  -ms-transition: width .25s;
+  -o-transition: width .25s;
+  transition: width .25s;
+}
+#menu ul li.last > a:after,
+#menu ul li:last-child > a:after {
+  display: none;
+}
+#menu ul li.active a {
+  color: #333333;
+}
+#menu ul li.active a:before {
+  width: 100%;
+}
+#menu.align-right li.last > a:after,
+#menu.align-right li:last-child > a:after {
+  display: block;
+}
+#menu.align-right li:first-child a:after {
+  display: none;
+}
+
+
+
+/* lorsque l'écran est plus petit */
+@media screen and (max-width: 768px) {
+  #menu ul li {
+    float: none;
+    display: block;
+  }
+  #menu ul li a {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(107, 116, 180, 0.9);
+  }
+  #menu ul li.last > a,
+  #menu ul li:last-child > a {
+    border: 0;
+  }
+  #menu ul li a:after {
+    display: none;
+  }
+  #menu ul li a:before {
+    display: none;
+  }
+}
+
+
+#form_recherche{
+  margin-left: 20px;
+}
+
+#form_recherche input{
+ display: inline-block;
+ padding-left: 10px;
+
+}
+
+
+
+
+#notif div
+{ position: absolute;
+  visibility: hidden;
+  margin: 0;
+  padding: 0;
+  background: #FFF;
+  border: 1px solid #5970B2}
+
+  #notif div a
+  { position: relative;
+    display: block;
+    margin: 0;
+    padding: 5px 10px;
+    width: auto;
+    white-space: nowrap;
+    text-align: left;
+    text-decoration: none;
+    background: #FFF;
+    color: #2875DE;
+    font: 11px arial}
+
+    #notif div a:hover{ 
+      background: #C0C0C0;
+      color: #FFF
+    }
+
+
+
+/****************************************
+*
+*     STYLE POUR LES BOUTONS
+*
+*****************************************/
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: bottom;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  outline: none;
+}
+
+.btn:hover {
+  position:relative;
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+
+
+
+/*******************************************************************
+*
+*     Affichage du modal pour l'inscription et la connexion
+*
+*****************************************/
+
+#signupModal, #signinModal{
+ visibility: hidden;
+ position: absolute;
+ width:100%;
+ height:100%; 
+ display: inline-block;
+ margin:0;
+ top:0;
+ left: 0;
+ text-align:center;
+ z-index: 1000;
+ -webkit-overflow-scrolling: touch;
+ background-color: gray;
+ opacity:0.90 ;
+}
+
+.title {
+  border-bottom: 1px solid #aeaeae;
+
+}
+
+.modal-dialog {
+  position: relative; 
+  float: center;
+  opacity: 100%;
+  display: inline-block;
+  top: 100px;
+  width: 400px;
+  vertical-align: center;
+  margin: auto;
+  background-color: white;
+  border-radius: 10px;
+}
+
+
+.modal-content {
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 6px;
+  outline: 0;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+
+.modal-body {
+  position: relative;
+  padding: 15px;
+}
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity .15s linear;
+  -o-transition: opacity .15s linear;
+  transition: opacity .15s linear;
+}
+
+
+.modal .fade {
+  -webkit-transition: -webkit-transform .3s ease-out;
+  -o-transition:      -o-transform .3s ease-out;
+  transition:         transform .3s ease-out;
+  -webkit-transform:  translate(0, -25%);
+  -ms-transform:      translate(0, -25%);
+  -o-transform:       translate(0, -25%);
+  transform:          translate(0, -25%);
+}
+
+.btn-close{
+  float: right;
+  top: 0;
+  font-size: 21px;
+  font-weight: bold;
+  border:none;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: .2;
+}
+
+.change_link {
+  float: right;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 11px;
+}
+
+.change_link a {
+  text-decoration: none;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.icon-user{
+  background-image: url(../images/user.png);
+  background-repeat:no-repeat;
+  background-position:6px;
+  padding:5px 0px 5px 30px;
+  position: relative;
+  opacity: 0.7;
+}
+
+.icon-password{
+  background-image: url(../images/password.png);
+  background-repeat:no-repeat;
+  background-position:6px;
+  padding:5px 0px 5px 30px;
+  position: relative;
+  opacity: 0.7;
+}
+
+.form-control {
+ position: relative;
+ z-index: 2;
+ float: left;
+ width: 80%;
+ margin-left: 10px;
+ margin-bottom: 15px;
+ height: 20px;
+ font-size: 12px;
+ line-height: 1.5;
+ border-radius: 5px;
+ border-color: #c0c0c0;
+ -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+ box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.form-control:focus {
+  border-color: #66512c;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #c0a16b;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #c0a16b;
+}
+
+
+
+#wrapper{
+  margin-top: 65px;
+  position: relative;
+
+}
+
+/* BARRE DE MENU VERTICAL POUR LES STATISTIQUES */
+#statistique{
+  position: fixed;          /* fixed while scrolling*/
+  background-color: white;
+  padding: 0;
+  width: 20%;
+  margin-left: 15px;
+  float: left;
+  height: 500px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+
+
+/* BARRE DE MENU VERTICAL POUR LES TWEETS */
+#list_tweet{
+  top: 0;
+  vertical-align:top;
+  text-align: top;
+  padding: 10px 0;
+  margin: 0 auto;
+  display: block;
+  width: 50%;
+  height: 500px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  background: rgba(226,226,226,1);
+  background: -moz-linear-gradient(-45deg, rgba(226,226,226,1) 0%, rgba(219,219,219,0.93) 34%, rgba(209,209,209,0.84) 80%, rgba(254,254,254,0.8) 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(226,226,226,1)), color-stop(34%, rgba(219,219,219,0.93)), color-stop(80%, rgba(209,209,209,0.84)), color-stop(100%, rgba(254,254,254,0.8)));
+  background: -webkit-linear-gradient(-45deg, rgba(226,226,226,1) 0%, rgba(219,219,219,0.93) 34%, rgba(209,209,209,0.84) 80%, rgba(254,254,254,0.8) 100%);
+  background: -o-linear-gradient(-45deg, rgba(226,226,226,1) 0%, rgba(219,219,219,0.93) 34%, rgba(209,209,209,0.84) 80%, rgba(254,254,254,0.8) 100%);
+  background: -ms-linear-gradient(-45deg, rgba(226,226,226,1) 0%, rgba(219,219,219,0.93) 34%, rgba(209,209,209,0.84) 80%, rgba(254,254,254,0.8) 100%);
+  background: linear-gradient(135deg, rgba(226,226,226,1) 0%, rgba(219,219,219,0.93) 34%, rgba(209,209,209,0.84) 80%, rgba(254,254,254,0.8) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=1 );
+}
+
+#post{
+ top: 0;
+ vertical-align:top;
+ text-align: center;
+ margin: 0 auto;
+ display: block;
+ padding: 10px 0;
+ width: 50%;
+ border-radius: 10;
+}
+
+#txt_message{
+  width:100%;
+  border-radius: 10;
+}
+
+
+/***********************************************
+*
+*     BLOC DE CONNEXION
+*
+***********************************************/
+
+#divconnexion{
+  margin-top: 5px;
+  float: right;
+  display: inline;
+}
+
+.italic {
+    font-style: italic;
+    font-size: 11pt;
+}
+
+.lastbtn{
+  margin-right: 20px;
+}
+
+.btn-disconnect:hover{
+  background-color: #ba6161;
+  position: relative;
+}
+
+.btn-disconnect{
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: bottom;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  outline: none;
+  background-color: #E85A5A;
+}
+
+/***********************************************
+*
+*     BLOC DE RECHERCHE
+*
+***********************************************/
+
+#recherche{
+ position: fixed; 
+ margin-left: 76%;  
+ top:65px;
+
+}
+
+
+
+
+textarea{
+ resize:both; 
+ font-size: 12px;
+}
+
+.panel{
+  clear: none;
+  margin: 2%;
+  vertical-align:top;
+  background-color: white;
+  width: 96%;
+  height: 30px;
+  margin-top: 2px;
+
+}
+
+
+/***********************************************************
+*
+* Gestion de l'affichage des tweets !! 
+*
+**************************************************************/
+
+
+.tweet {
+  margin: 10px 10px 45px 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+
+.tweettitle {
+  padding: 10px; 
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-top: 1px solid #ddd;
+  background-color: #E6E6E6;
+  vertical-align: bottom;
+}
+
+
+.author{
+  background-color: #E6E6E6;
+  vertical-align: bottom;
+}
+
+.addUser{
+  float: right;
+  margin-bottom: 2px;
+  padding: 8px 12px;
+  background-color: green;
+  height: 10px;
+  width: 10px;
+  border-radius: 3px;
+  -moz-border-radius:3px;
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=80);
+  opacity: .8;
+  -webkit-box-shadow: 6px 6px 26px -5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 6px 6px 26px -5px rgba(0,0,0,0.75);
+  box-shadow: 6px 6px 26px -5px rgba(0,0,0,0.75);
+  background-image: url(../images/user.png);
+  background-repeat: no-repeat;
+  background-position: 8px;
+}
+
+.addUser:hover{
+ background-image: url(../images/user.png);
+ background-color: #006600;
+ background-repeat: no-repeat;
+ background-position: 8px;  -webkit-box-shadow: 6px 6px 26px -5px rgba(0,0,0,0.75);
+ -moz-box-shadow: 6px 6px 26px -5px rgba(0,0,0,0.75);
+ box-shadow: 6px 6px 26px -5px rgba(0,0,0,0.75);
+}
+.tweetbody{
+  background-color: white;
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+
+.tweetfooter{
+  height: 40px;
+  background-color: #A0A0A0;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  vertical-align: middle;
+
+}
+
+.tweetfooter .btn {
+  margin-top : 3px;
+  background-color: #336699;
+  text-decoration: none;
+  color: black;
+
+}
+
+.date{
+  margin-left: 10px;
+  margin-top: 15px;
+  font-size: 12px;
+  font-style: italic;
+  font-family: OpenSans;
+}
+
+.toleft{
+  float: left;
+}
+
+.toright{
+  float: right;
+}
+
+
+
+

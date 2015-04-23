@@ -51,6 +51,7 @@ public class CommentService {
 				}
 				i++;
 			}
+			obj.put("citer", citation_id);
 			obj.put("hashTag", hashtag);
 			col.insert(obj);
 			retour = ServicesTools.ok();

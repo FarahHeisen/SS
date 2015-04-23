@@ -76,15 +76,21 @@ public class FindingService {
 		if(!or1.isEmpty())
 			masque.put("$or", or1);
 		JSONObject res = new JSONObject();
+		ArrayList<String> listeAuthor=new ArrayList<>();
 		try {
 			DB db = DBStatic.getMongoDB();
 			DBCollection col = db.getCollection("comments");
 			DBCursor cursor = col.find(masque);
-			int i = 0;
+			ArrayList<DBObject> listeComm=new ArrayList<>();
 			while(cursor.hasNext()){
 				DBObject o = cursor.next();
-				res.put("comment_"+ (++i), o);
+				listeComm.add(o);
+				if(!listeAuthor.contains(o.get("author_id")))
+					listeAuthor.add((String) o.get("author_id"));
 			}
+			
+			res.put("comment", listeComm);
+			res.put("author", BdTools.listUserJS(listeAuthor, key));
 		}catch (Exception e) {
 			return ServicesTools.error("mongo error", e.getMessage());
 		}

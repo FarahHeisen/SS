@@ -23,11 +23,11 @@ function connect(login, password){
 
 function traiteReponseConnexion(el){
 	if(el.error != undefined){
-		console.log("ici" +el.id);
+		console.log("ici " + el.id);
 	}else{
-		$("#signinModal").modal('hide');
-		window.location.href="main.jsp?id="+el.id+"&login="+el.login+"&key="+el.key+"";
-		//main(el.id, el.login, el.key);
+		//showModal("signinModal");
+		window.location.href="main.jsp?id=" + el.id + "&login=" + el.login + "&key=" + el.key + "";
+//		main(el.id, el.login, el.key);
 	}
 }
 

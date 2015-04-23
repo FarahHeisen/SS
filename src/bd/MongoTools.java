@@ -23,7 +23,7 @@ public class MongoTools {
 		obj.put("cible_id",""+cible_id);
 		obj.put("message",msg);
 		obj.put("date",(new GregorianCalendar()).getTime());
-		obj.put("vue?", "FALSE");
+		obj.put("vue", "FALSE");
 		obj.put("sender_id",""+sender_id);
 		col.insert(obj);
 	}

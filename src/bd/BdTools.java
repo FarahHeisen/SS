@@ -5,6 +5,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
+import org.bson.BSONObject;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.mongodb.DBObject;
 
 public abstract class BdTools {
 
@@ -355,6 +363,34 @@ public abstract class BdTools {
 			throw new BDException("get Stalked " + e.getMessage());
 		}
 	}
+
+	public static ArrayList<JSONObject> listUserJS(ArrayList<String> listeAuthor, String key) throws BDException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, JSONException{
+		ArrayList<Integer> amis=new ArrayList<>();
+		if(key!=null)
+			amis = BdTools.getStalked(key);
+		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		Connection c = DBStatic.getMySQLConnection();
+		Statement s = c.createStatement();
+		
+		String query = "SELECT id, login FROM USERS WHERE id IN ("+listeAuthor.get(0);
+		for(int i =1; i<listeAuthor.size();i++){
+			query+=", \""+listeAuthor.get(i)+"\"";
+		}
+		query +=");";
+		
+		s.executeQuery(query);
+		ResultSet rs = s.getResultSet();
+		ArrayList<JSONObject> res = new ArrayList<JSONObject>();
+		while(rs.next()){
+			JSONObject elem =new JSONObject();
+			elem.put("id", rs.getInt("id"));
+			elem.put("login", rs.getString("login"));
+			if(amis.contains(rs.getInt("id")))
+				elem.put("contact",false);
+			else
+				elem.put("contact", false);
+		}
+		return res;
+	}
+
 }
-
-
