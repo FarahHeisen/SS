@@ -55,7 +55,7 @@ pageEncoding="UTF-8"%>
              <!-- 
         STATISTIQUES DE L'UTILISATEUR
       -->  
-      <div id="statistique"> Statistiques </div>
+      <div id="statistique"> Statistiques </div>s
       <div id="post">
        <form id="form_poster" action="javascript:(function(){return;})()" method="get" OnSubmit="javascript:poster(this)"> 
         <textarea id="txt_message" name="message"

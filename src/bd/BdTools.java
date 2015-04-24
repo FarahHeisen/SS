@@ -364,8 +364,10 @@ public abstract class BdTools {
 		}
 	}
 
-	public static ArrayList<JSONObject> listUserJS(ArrayList<String> listeAuthor, String key) throws BDException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, JSONException{
-		ArrayList<Integer> amis=new ArrayList<>();
+	public static ArrayList<JSONObject> listUserJS(ArrayList<Integer> listeAuthor, String key) throws BDException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, JSONException{
+		if(listeAuthor.isEmpty())
+			return new ArrayList<JSONObject>();
+		ArrayList<Integer> amis=new ArrayList<Integer>();
 		if(key!=null)
 			amis = BdTools.getStalked(key);
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -374,7 +376,7 @@ public abstract class BdTools {
 		
 		String query = "SELECT id, login FROM USERS WHERE id IN ("+listeAuthor.get(0);
 		for(int i =1; i<listeAuthor.size();i++){
-			query+=", \""+listeAuthor.get(i)+"\"";
+			query+=", "+listeAuthor.get(i);
 		}
 		query +=");";
 		
@@ -386,9 +388,10 @@ public abstract class BdTools {
 			elem.put("id", rs.getInt("id"));
 			elem.put("login", rs.getString("login"));
 			if(amis.contains(rs.getInt("id")))
-				elem.put("contact",false);
+				elem.put("contact",true);
 			else
 				elem.put("contact", false);
+			res.add(elem);
 		}
 		return res;
 	}

@@ -1,8 +1,11 @@
 package services;
 
+import java.net.UnknownHostException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import bd.BDException;
@@ -15,6 +18,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.MongoException;
 
 public class FindingService {
 
@@ -44,7 +48,6 @@ public class FindingService {
 			masque.put("date", new BasicDBObject("$gt",after));
 		if(before != null)
 			masque.put("date", new BasicDBObject("$lt",before));
-
 		
 		// si c'est vrai, renvoie les messages doivent être écrit par des followers
 		if((followed) && (key!=null)){
@@ -52,7 +55,7 @@ public class FindingService {
 			try {
 				followedArray = BdTools.getStalked(key);
 			} catch (BDException e) {
-				return ServicesTools.error("getSaltked error : ", e.getMessage());
+				return ServicesTools.error("getSaltked :", e.getMessage());
 			}
 			
 			if(followedArray.size()>0){
@@ -76,7 +79,7 @@ public class FindingService {
 		if(!or1.isEmpty())
 			masque.put("$or", or1);
 		JSONObject res = new JSONObject();
-		ArrayList<String> listeAuthor=new ArrayList<>();
+		ArrayList<Integer> listeAuthor=new ArrayList<>();
 		try {
 			DB db = DBStatic.getMongoDB();
 			DBCollection col = db.getCollection("comments");
@@ -85,14 +88,28 @@ public class FindingService {
 			while(cursor.hasNext()){
 				DBObject o = cursor.next();
 				listeComm.add(o);
-				if(!listeAuthor.contains(o.get("author_id")))
-					listeAuthor.add((String) o.get("author_id"));
+				int id=Integer.parseInt((String)o.get("author_id"));
+				if(!listeAuthor.contains(id))
+					listeAuthor.add(id );
 			}
-			
-			res.put("comment", listeComm);
+			res.put("comment", listeComm); // liste des commentaires 
 			res.put("author", BdTools.listUserJS(listeAuthor, key));
-		}catch (Exception e) {
-			return ServicesTools.error("mongo error", e.getMessage());
+		}catch (MongoException e) {
+			return ServicesTools.error("MongoException", e.getMessage());
+		} catch (InstantiationException e) {
+			return ServicesTools.error("InstantiationException", e.getMessage());
+		} catch (IllegalAccessException e) {
+			return ServicesTools.error("IllegalAccessException ", e.getMessage());
+		} catch (ClassNotFoundException e) {
+			return ServicesTools.error("ClassNotFoundException", e.getMessage());
+		} catch (JSONException e) {
+			return ServicesTools.error("JSONException", e.getMessage());
+		} catch (BDException e) {
+			return ServicesTools.error("BDException", e.getMessage());
+		} catch (SQLException e) {
+			return ServicesTools.error("SQLException", e.getMessage());
+		} catch (UnknownHostException e) {
+			return ServicesTools.error("UnknownHostException", e.getMessage());
 		}
 		return res;
 	}

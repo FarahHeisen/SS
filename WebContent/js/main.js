@@ -92,26 +92,25 @@ User.prototype.modifyStatus = function(){ this.contact = !this.contact; }; /* re
  * @returns {String}
  */
 
-//A REVOIRE!!
-Tweet.prototype.getHTML = function(Tweet){
-	var res  = " <div class=\"panel panel-default\" id = "+ this.id_msg+"> ";
-	res += "<div class=\"panel-heading\">";
-	res += this.auteur + "<div class=\"pull-right\"><a href=\"javascript:ajouter_user\"("+this.author_id+") "
-	res += "class=\"btn btn-success addUser\" > ";
-	res += "  	<span class=\"glyphicon glyphicon-plus\"></span></a></div>";
-	res += " </div>";
-	res += "  <div class=\"panel-body\">";
-	res += this.texte;
-	res += "  </div>";
-	res += "  <div class=\"panel-footer clearfix\">";
-	res += "   <div class=\"pull-right\">";
-	res += "<a href=\"\" class=\"btn btn-default\">Retweet</a>";
-	res += "  </div>";
-	res += "   </div>";
-	res += " </div> ";	
+ Tweet.prototype.getHTML = function(Tweet){
+ 	var res = '<div class="tweet">' ;
+ 	res+=  '<div class="tweettitle">';
+ 	res+= '<span class="author">'+ env.users[this.id] +'</span><div class="toright"><a href="javascript:ajouter_user("'+this.id +'")" class="addUser"></a></div>';
+ 	res+=  '</div>';
+ 	res+= '<div class="tweetbody">';
+ 	res+=  this.texte;
+ 	res+=  '</div>';
+ 	res+=  '<div class="tweetfooter">';
+ 	res+=  ' <div class="toleft date">';
+ 	res+=     "Posté le :" + date ;
+ 	res+=  '</div>';
+ 	res+=   '<div class="toright">';
+ 	res+=    '<a href="javascript=void(0)" class="btn">Retweet</a>';
+ 	res+=  "</div>";
+ 	res+= "</div>";
+ 	res+= "</div> ";
 
-
-}
+ }
 
 /**
  * Traite la reponse de la servlet AfficherMessage
@@ -119,27 +118,69 @@ Tweet.prototype.getHTML = function(Tweet){
  * @param json
  */
  Tweet.traiteReponseTweetJSON = function(json) {
- 	var s = "";
- 	var tmp = new Array();
- 	for ( var i = 0; i < json.length; i++) {
+ 	if(json.error){
+ 	//	console.log(json);
+ 	testrevive();
+ 	rep = JSON.parse(testrevive, revive);
+ 	console.log(JSON.stringify(json));
+ }
+ var s = "";
+ var tmp = new Array();
+ for ( var i = 0; i < json.length; i++) {
 		// id_msg, author_id, auteur, texte, date, score, hashtag, sharedBy
-		var msg = new Tweet(json[i].id_msg, json[i].author_id,
-			json[i].auteur, json[i].texte, json[i].date.$date, json[i].sharedBy);
-		tmp[i] = msg;
-		s += msg.getHTML(msg);
+		var tweet = new Tweet(json[i].idmsg, json[i].author_id, json[i].texte, json[i].date.$date, json[i].sharedBy);
+		tmp[i] = tweet;
+		s += tweet.getHTML(msg);
 	}
 	$("#list_tweet").html(s);
 };
 
+
+
+function testrevive(){
+	var tweet = {
+		"author":{
+			id :119,
+			login :"clementbertrand",
+			contact: false
+		}
+		,"comment": {
+			idmsg : 200000,
+			author_id : 119,
+			texte : "texte",
+			date : "date",
+			humeur :"humeur",
+			hastag : "hashtag",
+			sharedBy :"sharedBy"
+		}
+	}
+	console.log("test : "+ JSON.stringify(tweet));
+	console.log("test obj : "+ tweet);
+
+	return JSON.stringify(tweet);	
+}
+
+
 function revive (key, value){
 	if (key=="author"){ // le cas pour le user
+		console.log("author");
 		return new User(value.id, value.login, value.contact);
 	}
 	if(key=="comment"){
+		console.log("comment");
 		return new Tweet(value._id, value.author_id, value.text, value.date, value.humeur, value.citer,value.hashtag, value.sharedBy);
 	}
 	if(key=="notif"){
+		
 		return new Notif(value.cible_id,value.message,value.date,value.vue,value.sender_id);
+	}
+	if(key == "id" || key == "login"  || key == "contact"  || key == "_id"  || key == "author_id"  || key == "text"){
+		console.log("id");
+		return value;
+	}
+	if(key == "date" || key == "humeur"  || key == "citer"  || key == "hashtag" || key == "sharedBy"){
+		console.log("date");
+		return value;
 	}
 }
 
@@ -177,11 +218,12 @@ function search(){
 		data: traiteQuery(rquery, friends, shared),
 		dataType: "json",
 		success: Tweet.traiteReponseTweetJSON,
-		error:function(jqXHR,textStatus,errorThrown){
-			alert(jqXHR+ " "+textStatus+ " " + errorThrown);
+		error: Tweet.traiteReponseTweetJSON
+		// error:function(jqXHR,textStatus,errorThrown){
+		// 	alert(jqXHR+ " "+textStatus+ " " + errorThrown);
 
-		}
-	});
+	//	}
+});
 }
 
 
@@ -202,16 +244,16 @@ function traiteQuery(query, friends, shared){
 	/*récupération des keyword de la recherche*/
 	var res_keyword = "";
 	var re_keyword = /([A-Z]+)/igm; 
-	var str = query;
+	var strg = query;
 	var m_keyword;
-	if ((m_htag = str.match(re_htag)) !== null) {
+	if ((m_keyword = strg.match(re_keyword)) !== null) {
 		console.log("keyword");
-		for (var i = 0; i < m_htag.length; i++) {
+		for (var i = 0; i < m_keyword.length; i++) {
 			res_keyword  += "&keyword="+ m_keyword[i].replace(/([A-Z]+)/igm, '$1');
 		};
 	}
 
-
+	console.log(res_keyword);
 	/*récupération des auteurs de la recherche*/
 	var res_author = "";
 	var re_author = /@([A-Z]*)/igm; 
@@ -224,7 +266,7 @@ function traiteQuery(query, friends, shared){
 	}
 
 //
-res = "key="+ env.key + "" + res_author + "" +res_htag+ "&shared=" + shared + "&followed="+ friends;
+res = "key="+ env.key + "" + res_keyword + "" + res_author + "" +res_htag+ "&shared=" + shared + "&followed="+ friends;
 
 console.log(res);
 return res;
